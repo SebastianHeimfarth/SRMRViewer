@@ -1,0 +1,43 @@
+@page "/"
+@using SRMRDisplay.Data
+@inject BarDisplayProvider barDisplayProvider
+
+<div style="background: red; position: fixed; left:0; height:100%; width:50%;">
+
+</div>
+<div style="background: blue; position: fixed; right: 0; height:100%; width:50%;">
+    @if (barDisplay == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+<svg width="@barDisplay.TotalWidth" height="@barDisplay.TotalHeight" style='stroke-width: 0px; background-color: lightgray;' overflow="visible">
+
+    <VerticalBar X="100" Y="50" BarDisplay="@barDisplay" />
+
+    @foreach (var element in barDisplay.Entries)
+    {
+        <BarElement X="100" Y="50" BarDisplay="@barDisplay" Model="@element" />
+    }
+
+
+</svg>
+    }
+
+</div>
+
+@code{
+    private BarDisplay barDisplay;
+
+
+
+
+
+
+    protected override void OnInitialized()
+    {
+        
+        barDisplay = barDisplayProvider.GetByName("SR");
+    }
+}

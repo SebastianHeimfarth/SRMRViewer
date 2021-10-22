@@ -1,0 +1,29 @@
+﻿
+<g transform="translate(@X, @Y)">
+    <rect x="@(BarDisplay.Stroke / 2)" y="@(BarDisplay.Stroke / 2)" width="@(BarDisplay.BarWidth - BarDisplay.Stroke)" height="@(BarDisplay.BarHeight - BarDisplay.Stroke)" style="fill: rgb(255,255,255); fill-opacity: 0; stroke-width: @BarDisplay.Stroke; stroke: rgb(0,0,0)" />
+
+    @for (decimal yPos = BarDisplay.MinValue; yPos <= BarDisplay.MaxValue; yPos += BarDisplay.Step)
+    {
+
+        decimal y = BarDisplay.BarHeight - (yPos - BarDisplay.MinValue ) * BarDisplay.ScalingFactor;
+
+        <rect x="@(-BarDisplay.ScalaWidth)" y="@(y - BarDisplay.Stroke)" width="@BarDisplay.ScalaWidth" height="@BarDisplay.Stroke" style="fill:black;stroke-width:0;"></rect>
+
+
+        <text>
+            <text dy="@(BarDisplay.Stroke/2)" alignment-baseline="central" text-anchor="end" x="@(-BarDisplay.ScalaWidth * 2)" y="@y">@yPos</text>
+        </text>
+    }
+</g>
+
+
+@code {
+    [Parameter]
+    public BarDisplay BarDisplay { get; set; }
+
+    [Parameter]
+    public decimal X { get; set; } = 0;
+
+    [Parameter]
+    public decimal Y { get; set; } = 0;
+}
