@@ -1,17 +1,21 @@
 ﻿
 <g transform="translate(@X, @Y)">
-    <rect x="@(BarDisplay.Stroke / 2)" y="@(BarDisplay.Stroke / 2)" width="@(BarDisplay.BarWidth - BarDisplay.Stroke)" height="@(BarDisplay.BarHeight - BarDisplay.Stroke)" style="fill: rgb(255,255,255); fill-opacity: 0; stroke-width: @BarDisplay.Stroke; stroke: rgb(0,0,0)" />
+    <rect x="@(Model.Stroke / 2)" y="@(Model.Stroke / 2)" width="@(Model.BarWidth - Model.Stroke)" height="@(Model.BarHeight - Model.Stroke)" style="fill: rgb(255,255,255); fill-opacity: 0; stroke-width: @Model.Stroke; stroke: rgb(0,0,0)" />
 
-    @for (decimal yPos = BarDisplay.MinValue; yPos <= BarDisplay.MaxValue; yPos += BarDisplay.Step)
+    @for (decimal yPos = Model.MinValue; yPos <= Model.MaxValue; yPos += Model.Step)
     {
 
-        decimal y = BarDisplay.BarHeight - (yPos - BarDisplay.MinValue ) * BarDisplay.ScalingFactor;
+        decimal y = Model.BarHeight - (yPos - Model.MinValue) * Model.ScalingFactor;
 
-        <rect x="@(-BarDisplay.ScalaWidth)" y="@(y - BarDisplay.Stroke)" width="@BarDisplay.ScalaWidth" height="@BarDisplay.Stroke" style="fill:black;stroke-width:0;"></rect>
+        <rect x="@(-Model.ScalaWidth)" y="@(y - Model.Stroke)" width="@Model.ScalaWidth" height="@Model.Stroke" style="fill:black;stroke-width:0;"></rect>
 
 
         <text>
-            <text dy="@(BarDisplay.Stroke/2)" alignment-baseline="central" text-anchor="end" x="@(-BarDisplay.ScalaWidth * 2)" y="@y">@yPos</text>
+            <text dy="@(Model.Stroke/2)" alignment-baseline="central" font-family="consolas" text-anchor="end" x="@(-Model.ScalaWidth * 2)" y="@y">@yPos</text>
+        </text>
+
+        <text>
+            <text dy="@(Model.Stroke/2)" alignment-baseline="central" font-family="consolas" text-anchor="end" x="@(-Model.ScalaWidth * 2 -60)" fill="rgb(0,0,255)" y="@y">@Model.GetValueForIndex(yPos)</text>
         </text>
     }
 </g>
@@ -19,7 +23,7 @@
 
 @code {
     [Parameter]
-    public BarDisplay BarDisplay { get; set; }
+    public VerticalBarGraphModel Model { get; set; }
 
     [Parameter]
     public decimal X { get; set; } = 0;

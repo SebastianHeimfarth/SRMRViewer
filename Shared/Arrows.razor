@@ -1,0 +1,30 @@
+﻿
+<g transform="translate(@X, @Y)">
+    <line x1="@(Model.BarWidth + lineWidth)" y1="@rightYPos" x2="@(Model.BarWidth+ Model.Stroke*10)" y2="@rightYPos" stroke="red"
+          stroke-width="@Model.Stroke" marker-end="url(#endarrowRed)" />
+
+    <line x1="@(-lineWidth )" y1="@leftYPos" x2="@(-Model.Stroke*10)" y2="@leftYPos" stroke="grey"
+          stroke-width="@Model.Stroke" marker-end="url(#endarrowGrey)" />
+</g>
+@code {
+
+
+    [Parameter]
+    public VerticalBarGraphModel Model { get; set; }
+
+    [Parameter]
+    public decimal X { get; set; } = 0;
+
+    [Parameter]
+    public decimal Y { get; set; } = 0;
+
+    private int lineWidth = 70;
+
+    private decimal leftYPos => CalculateYPosition(Model.LeftArrow);
+    private decimal rightYPos => CalculateYPosition(Model.RightArrow);
+
+    private decimal CalculateYPosition(decimal value)
+    {
+        return Model.BarHeight - (value - Model.MinValue) * Model.ScalingFactor - Model.Stroke / 2;
+    }
+}

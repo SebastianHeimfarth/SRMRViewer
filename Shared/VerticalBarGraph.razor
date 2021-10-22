@@ -1,0 +1,50 @@
+﻿@using SRMRDisplay.Data
+<div>
+    <svg x="@X" y="@Y" width="@Model.TotalWidth" height="@Model.TotalHeight" style='stroke-width: 0px; background-color: lightgray;' overflow="visible">
+        <defs>
+
+            <marker id="endarrowRed" markerWidth="10" markerHeight="7"
+                    refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth">
+                <polygon points="0 0, 10 3.5, 0 7" fill="red" />
+            </marker>
+            <marker id="endarrowGrey" markerWidth="10" markerHeight="7"
+                    refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth">
+                <polygon points="0 0, 10 3.5, 0 7" fill="grey" />
+            </marker>
+        </defs>
+
+
+        <text x="20" fill="rgb(0,0,255)" dy="@YOffsetHeader" font-size="1.5em" font-family="consolas">€/MWh(Ø)</text>
+        <text x="130" y="@YOffsetHeader" font-size="1.5em" font-family="consolas">MW</text>
+        <text x="180" y="@YOffsetHeader" font-size="1.5em" font-family="consolas">@Model.ProductName</text>
+
+
+        <Arrows X="@XOffset" Y="@YOffset" Model="@Model"/>
+
+        <VerticalBar X="@XOffset" Y="@YOffset" Model="@Model" />
+
+        @foreach (var element in Model.Elements)
+        {
+            <BarElement X="@XOffset" Y="@YOffset" GraphModel="@Model" Model="@element" />
+        }
+
+    </svg>
+</div>
+
+@code {
+
+    [Parameter]
+    public VerticalBarGraphModel Model { get; set; }
+
+    [Parameter]
+    public decimal X { get; set; } = 0;
+
+    [Parameter]
+    public decimal Y { get; set; } = 0;
+
+    private int XOffset = 180;
+    private int YOffset = 100;
+
+    private int YOffsetHeader = 60;
+
+}

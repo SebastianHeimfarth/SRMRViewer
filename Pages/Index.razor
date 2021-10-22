@@ -1,43 +1,66 @@
 @page "/"
 @using SRMRDisplay.Data
-@inject BarDisplayProvider barDisplayProvider
+@inject VerticalBarGraphManager barDisplayManager
 
-<div style="background: red; position: fixed; left:0; height:100%; width:50%;">
+<div style="position: fixed; left:0; height:100%; width:50%;">
+    <h5>zum Ausprobieren:</h5>
+    <p>@status</p>
+    <textarea style="width: 95%; font-family: 'Courier New'" rows="50" @bind="jsonModel" @onblur="@TriggerRefreshInput">
+    
+    </textarea>
 
 </div>
-<div style="background: blue; position: fixed; right: 0; height:100%; width:50%;">
-    @if (barDisplay == null)
+<div style="position: fixed; right: 0; height:100%; width:50%;">
+    @if (srGraph == null)
     {
         <p><em>Loading...</em></p>
     }
     else
     {
-<svg width="@barDisplay.TotalWidth" height="@barDisplay.TotalHeight" style='stroke-width: 0px; background-color: lightgray;' overflow="visible">
-
-    <VerticalBar X="100" Y="50" BarDisplay="@barDisplay" />
-
-    @foreach (var element in barDisplay.Entries)
-    {
-        <BarElement X="100" Y="50" BarDisplay="@barDisplay" Model="@element" />
-    }
-
-
-</svg>
+        <div style="display:flex">
+            <VerticalBarGraph Model="srGraph"></VerticalBarGraph>
+            <div style="width:30px;"></div>
+            <VerticalBarGraph Model="mrGraph"></VerticalBarGraph>
+        </div>
+        
     }
 
 </div>
 
 @code{
-    private BarDisplay barDisplay;
+    private VerticalBarGraphModel srGraph;
+    private VerticalBarGraphModel mrGraph;
 
+    private string status = "";
 
+    private string jsonModel;
+    private string lastRenderedJson;
 
-
-
+    private void TriggerRefreshInput()
+    {
+        if (lastRenderedJson != jsonModel)
+        {
+            status = "updating...";
+            barDisplayManager.UpdateFromJson(jsonModel);
+            UpdateGraphs();
+            lastRenderedJson = jsonModel;
+            status = $"updated {DateTime.Now}";
+        }
+        else
+        {
+            status = "up to date";
+        }
+    }
 
     protected override void OnInitialized()
     {
-        
-        barDisplay = barDisplayProvider.GetByName("SR");
+        UpdateGraphs();
+        jsonModel = barDisplayManager.ToJson();
+    }
+
+    private void UpdateGraphs()
+    {
+        srGraph = barDisplayManager.GetByName("SR");
+        mrGraph = barDisplayManager.GetByName("MR");
     }
 }

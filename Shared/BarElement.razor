@@ -1,5 +1,5 @@
 ﻿<svg x="@X" y="@Y">
-    <rect x="@(BarDisplay.Stroke)" y="@yPos" width="@(BarDisplay.BarWidth - 2 * BarDisplay.Stroke)" height="@height" style="fill:@Model.Color;stroke-width:0;" >
+    <rect x="@(GraphModel.Stroke)" y="@yPos" width="@(GraphModel.BarWidth - 2 * GraphModel.Stroke)" height="@height" style="fill:@Model.Color;stroke-width:0;" >
         <title>@Model.Tooltip</title>
 
     </rect>
@@ -7,10 +7,10 @@
 
 @code {
     [Parameter]
-    public BarEntry Model { get; set; }
+    public BarElementModel Model { get; set; }
 
     [Parameter]
-    public BarDisplay BarDisplay { get; set; }
+    public VerticalBarGraphModel GraphModel { get; set; }
 
     [Parameter]
     public decimal X { get; set; } = 0;
@@ -18,7 +18,7 @@
     [Parameter]
     public decimal Y { get; set; } = 0;
 
-    private decimal yPos => BarDisplay.BarHeight - (Model.From - BarDisplay.MinValue) * BarDisplay.ScalingFactor - height - BarDisplay.Stroke/2;
+    private decimal yPos => GraphModel.BarHeight - (Model.From - GraphModel.MinValue) * GraphModel.ScalingFactor - height - GraphModel.Stroke/2;
 
-    private decimal height => Model.Height * BarDisplay.ScalingFactor;
+    private decimal height => Model.Height * GraphModel.ScalingFactor;
 }

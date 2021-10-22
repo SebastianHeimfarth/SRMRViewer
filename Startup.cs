@@ -28,7 +28,7 @@ namespace SRMRDisplay
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<BarDisplayProvider>();
+            services.AddSingleton<VerticalBarGraphManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
